@@ -3,10 +3,15 @@ import 'package:provider/provider.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/app_text_styles.dart';
+import 'core/services/notification_service.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
 import 'features/client/products/presentation/providers/product_provider.dart';
 import 'features/client/cart/presentation/providers/cart_provider.dart';
 import 'features/client/orders/presentation/providers/order_provider.dart';
+import 'shared/providers/notification_provider.dart';
+import 'features/admin/dashboard/presentation/providers/admin_stats_provider.dart';
+import 'features/admin/orders/presentation/providers/admin_orders_provider.dart';
+import 'features/admin/products/presentation/providers/admin_products_provider.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
 import 'features/client/home/presentation/screens/client_home_screen.dart';
 import 'features/admin/dashboard/presentation/screens/admin_dashboard_screen.dart';
@@ -23,9 +28,16 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(
+          create: (_) => NotificationProvider(NotificationService()),
+        ),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
+        // Admin providers
+        ChangeNotifierProvider(create: (_) => AdminStatsProvider()),
+        ChangeNotifierProvider(create: (_) => AdminOrdersProvider()),
+        ChangeNotifierProvider(create: (_) => AdminProductsProvider()),
       ],
       child: MaterialApp(
         title: 'TaniFresh',
