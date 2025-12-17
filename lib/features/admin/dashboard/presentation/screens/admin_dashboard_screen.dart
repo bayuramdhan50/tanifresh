@@ -7,6 +7,10 @@ import 'package:tanifresh/features/auth/presentation/providers/auth_provider.dar
 import 'package:tanifresh/features/auth/presentation/screens/login_screen.dart';
 import 'package:tanifresh/features/admin/weather/data/weather_service.dart';
 import 'package:tanifresh/features/admin/user_approval/presentation/screens/user_approval_screen.dart';
+import 'package:tanifresh/features/admin/dashboard/presentation/providers/admin_stats_provider.dart';
+import 'package:tanifresh/features/admin/orders/presentation/screens/admin_orders_screen.dart';
+import 'package:tanifresh/features/admin/products/presentation/screens/admin_products_screen.dart';
+import 'package:tanifresh/shared/providers/notification_provider.dart';
 
 /// Admin dashboard screen with weather widget
 class AdminDashboardScreen extends StatefulWidget {
@@ -27,6 +31,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void initState() {
     super.initState();
     _loadWeather();
+
+    // Connect notification provider to admin stats provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final notificationProvider = context.read<NotificationProvider>();
+      final adminStatsProvider = context.read<AdminStatsProvider>();
+      adminStatsProvider.setNotificationProvider(notificationProvider);
+    });
   }
 
   Future<void> _loadWeather() async {
@@ -59,7 +70,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     return Scaffold(
       body: _currentIndex == 0
           ? AdminDashboardPage(
-              weather: _weather, loadingWeather: _loadingWeather)
+              weather: _weather,
+              loadingWeather: _loadingWeather,
+              onNavigateToTab: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            )
           : _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -99,19 +117,35 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 }
 
 /// Dashboard page
-class AdminDashboardPage extends StatelessWidget {
+class AdminDashboardPage extends StatefulWidget {
   final WeatherData? weather;
   final bool loadingWeather;
+  final Function(int)? onNavigateToTab;
 
   const AdminDashboardPage({
     super.key,
     this.weather,
     this.loadingWeather = false,
+    this.onNavigateToTab,
   });
+
+  @override
+  State<AdminDashboardPage> createState() => _AdminDashboardPageState();
+}
+
+class _AdminDashboardPageState extends State<AdminDashboardPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AdminStatsProvider>().fetchStats();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
+    final statsProvider = context.watch<AdminStatsProvider>();
     final adminName = authProvider.user?.name ?? 'Admin';
 
     return CustomScrollView(
@@ -185,7 +219,7 @@ class AdminDashboardPage extends StatelessWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate([
               // Weather widget
-              _buildWeatherWidget(weather, loadingWeather),
+              _buildWeatherWidget(widget.weather, widget.loadingWeather),
 
               const SizedBox(height: AppTheme.spacingL),
 
@@ -196,7 +230,9 @@ class AdminDashboardPage extends StatelessWidget {
                     child: _buildStatCard(
                       icon: Icons.people,
                       label: 'Pending Users',
-                      value: '5',
+                      value: statsProvider.isLoading
+                          ? '...'
+                          : '${statsProvider.pendingUsersCount}',
                       color: AppColors.statusPending,
                     ),
                   ),
@@ -205,7 +241,9 @@ class AdminDashboardPage extends StatelessWidget {
                     child: _buildStatCard(
                       icon: Icons.shopping_cart,
                       label: 'New Orders',
-                      value: '8',
+                      value: statsProvider.isLoading
+                          ? '...'
+                          : '${statsProvider.pendingOrdersCount}',
                       color: AppColors.primary,
                     ),
                   ),
@@ -220,7 +258,9 @@ class AdminDashboardPage extends StatelessWidget {
                     child: _buildStatCard(
                       icon: Icons.check_circle,
                       label: 'Completed',
-                      value: '45',
+                      value: statsProvider.isLoading
+                          ? '...'
+                          : '${statsProvider.completedOrdersCount}',
                       color: AppColors.statusApproved,
                     ),
                   ),
@@ -229,7 +269,9 @@ class AdminDashboardPage extends StatelessWidget {
                     child: _buildStatCard(
                       icon: Icons.inventory,
                       label: 'Products',
-                      value: '24',
+                      value: statsProvider.isLoading
+                          ? '...'
+                          : '${statsProvider.totalProductsCount}',
                       color: AppColors.info,
                     ),
                   ),
@@ -248,8 +290,11 @@ class AdminDashboardPage extends StatelessWidget {
               _buildActionButton(
                 icon: Icons.person_add,
                 title: 'Approve Users',
-                subtitle: '5 pending approvals',
-                onTap: () {},
+                subtitle:
+                    '${statsProvider.pendingUsersCount} pending approvals',
+                onTap: () {
+                  widget.onNavigateToTab?.call(1); // Navigate to Users tab
+                },
               ),
 
               const SizedBox(height: AppTheme.spacingM),
@@ -258,7 +303,9 @@ class AdminDashboardPage extends StatelessWidget {
                 icon: Icons.add_box,
                 title: 'Add Product',
                 subtitle: 'Add new product to catalog',
-                onTap: () {},
+                onTap: () {
+                  widget.onNavigateToTab?.call(3); // Navigate to Products tab
+                },
               ),
             ]),
           ),
@@ -457,36 +504,22 @@ class AdminUsersPage extends StatelessWidget {
   }
 }
 
-/// Orders page (placeholder)
+/// Orders page
 class AdminOrdersPage extends StatelessWidget {
   const AdminOrdersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manajemen Pesanan'),
-      ),
-      body: const Center(
-        child: Text('Halaman Pesanan - Coming Soon'),
-      ),
-    );
+    return const AdminOrdersScreen();
   }
 }
 
-/// Products page (placeholder)
+/// Products page
 class AdminProductsPage extends StatelessWidget {
   const AdminProductsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manajemen Produk'),
-      ),
-      body: const Center(
-        child: Text('Halaman Produk - Coming Soon'),
-      ),
-    );
+    return const AdminProductsScreen();
   }
 }

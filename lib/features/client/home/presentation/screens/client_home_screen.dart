@@ -11,6 +11,10 @@ import 'package:tanifresh/features/client/products/presentation/screens/product_
 import 'package:tanifresh/features/client/orders/presentation/providers/order_provider.dart';
 import 'package:tanifresh/features/client/orders/presentation/screens/order_detail_screen.dart';
 import 'package:tanifresh/shared/models/order_model.dart';
+import 'package:tanifresh/shared/providers/notification_provider.dart';
+import 'package:tanifresh/features/client/profile/presentation/screens/delivery_address_screen.dart';
+import 'package:tanifresh/features/client/profile/presentation/screens/settings_screen.dart';
+import 'package:tanifresh/features/client/profile/presentation/screens/help_screen.dart';
 
 /// Client home screen with bottom navigation
 class ClientHomeScreen extends StatefulWidget {
@@ -28,6 +32,14 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Connect notification provider to order provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final notificationProvider = context.read<NotificationProvider>();
+      final orderProvider = context.read<OrderProvider>();
+      orderProvider.setNotificationProvider(notificationProvider);
+    });
+
     _pages = [
       ClientDashboardPage(onNavigateToProducts: () => _navigateToTab(1)),
       const ClientProductsPage(),
@@ -696,17 +708,38 @@ class ClientProfilePage extends StatelessWidget {
           _buildMenuItem(
             icon: Icons.location_on,
             title: 'Alamat Pengiriman',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DeliveryAddressScreen(),
+                ),
+              );
+            },
           ),
           _buildMenuItem(
             icon: Icons.settings,
             title: 'Pengaturan',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              );
+            },
           ),
           _buildMenuItem(
             icon: Icons.help_outline,
             title: 'Bantuan',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HelpScreen(),
+                ),
+              );
+            },
           ),
 
           const SizedBox(height: AppTheme.spacingL),
