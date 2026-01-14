@@ -352,6 +352,6 @@ app.get('/api/weather', async (req, res) => {
 // ==================== START SERVER ====================
 
 app.listen(PORT, () => {
-    console.log(`✅ TaniFresh Backend running on http://localhost:${PORT}`);
+    console.log(`✅ TatanenFresh Backend running on http://localhost:${PORT}`);
     console.log(`📊 Database: ${process.env.DB_NAME}`);
 });

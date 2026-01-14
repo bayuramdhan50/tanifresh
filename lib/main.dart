@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AdminProductsProvider()),
       ],
       child: MaterialApp(
-        title: 'TaniFresh',
+        title: 'TatanenFresh',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const SplashScreen(),
@@ -163,7 +163,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                       const SizedBox(height: AppTheme.spacingL),
                       Text(
-                        'TaniFresh',
+                        'TatanenFresh',
                         style: AppTextStyles.display1.copyWith(
                           color: Colors.white,
                           fontSize: 40,
