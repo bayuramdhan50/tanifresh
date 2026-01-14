@@ -22,6 +22,9 @@ class AppColors {
   static const Color textSecondary = Color(0xFF757575);
   static const Color textHint = Color(0xFFBDBDBD);
 
+  // Border Colors
+  static const Color border = Color(0xFFE0E0E0);
+
   // Status Colors
   static const Color success = Color(0xFF4CAF50);
   static const Color warning = Color(0xFFFFC107);

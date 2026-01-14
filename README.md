@@ -15,6 +15,7 @@ Aplikasi mobile marketplace B2B yang menghubungkan restoran dengan petani/suppli
   - PPN 11% otomatis
 - ✅ Riwayat pesanan dengan status tracking
 - ✅ Profil pengguna
+- ✅ **Halaman Tentang Aplikasi** dengan info developer
 
 ### Admin (Petani/Supplier)
 - ✅ Dashboard dengan statistik
@@ -23,6 +24,8 @@ Aplikasi mobile marketplace B2B yang menghubungkan restoran dengan petani/suppli
 - ✅ Manajemen produk (CRUD)
 - ✅ Manajemen pesanan
 - ✅ Update status pesanan
+- ✅ **Halaman Tentang Aplikasi** dengan info developer dan fitur
+- ✅ **Link YouTube Demo** untuk demo aplikasi
 
 ## 🛠️ Tech Stack
 
@@ -216,10 +219,21 @@ Total = Subtotal - Diskon + Pajak
 - Password hashing
 - SQL injection prevention
 
-## 👥 Kontributor
+## 👥 Tim Pengembang
 
-- Developer: [Nama Anda]
-- UTS: [Mata Kuliah]
+**Developer 1:**
+- Nama: Fadhlan Rahman Permana
+- NPM: 152021032
+
+**Developer 2:**
+- Nama: Wibi Ataya Sani
+- NPM: 152022063
+
+## 📺 Demo Aplikasi
+
+Video demo aplikasi dapat diakses langsung dari aplikasi melalui menu "Tentang Aplikasi" di halaman Profil (Client) atau Quick Actions (Admin).
+
+Link YouTube: *Segera hadir*
 
 ## 📄 License
 

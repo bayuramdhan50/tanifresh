@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../shared/models/user_model.dart';
 import '../../data/services/auth_service.dart';
 
@@ -109,6 +110,15 @@ class AuthProvider with ChangeNotifier {
 
       _user = user;
       _isAuthenticated = true;
+
+      // Save userId and isAdmin to SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      // Assuming _authService.login already handles saving the token,
+      // we only need to save additional user-specific data here.
+      await prefs.setString(
+          'userId', _user!.id.toString()); // Store user ID for chat!
+      await prefs.setBool('isAdmin', _user!.role == 'admin'); // Check role
+
       _isLoading = false;
       notifyListeners();
       return true;
