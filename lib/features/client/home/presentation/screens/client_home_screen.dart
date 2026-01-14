@@ -15,6 +15,10 @@ import 'package:tanifresh/shared/providers/notification_provider.dart';
 import 'package:tanifresh/features/client/profile/presentation/screens/delivery_address_screen.dart';
 import 'package:tanifresh/features/client/profile/presentation/screens/settings_screen.dart';
 import 'package:tanifresh/features/client/profile/presentation/screens/help_screen.dart';
+import 'package:tanifresh/shared/screens/about_screen.dart';
+import 'package:tanifresh/features/client/statistics/presentation/screens/client_statistics_screen.dart';
+import 'package:tanifresh/shared/screens/supplier_map_screen.dart';
+import 'package:tanifresh/shared/screens/chat_screen.dart';
 
 /// Client home screen with bottom navigation
 class ClientHomeScreen extends StatefulWidget {
@@ -730,6 +734,18 @@ class ClientProfilePage extends StatelessWidget {
             },
           ),
           _buildMenuItem(
+            icon: Icons.bar_chart,
+            title: 'Statistik Saya',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ClientStatisticsScreen(),
+                ),
+              );
+            },
+          ),
+          _buildMenuItem(
             icon: Icons.help_outline,
             title: 'Bantuan',
             onTap: () {
@@ -737,6 +753,46 @@ class ClientProfilePage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HelpScreen(),
+                ),
+              );
+            },
+          ),
+          _buildMenuItem(
+            icon: Icons.map_outlined,
+            title: 'Peta Supplier',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SupplierMapScreen(),
+                ),
+              );
+            },
+          ),
+          _buildMenuItem(
+            icon: Icons.chat_bubble_outline,
+            title: 'Chat dengan Admin',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ChatScreen(
+                    otherUserId: 'admin-001',
+                    otherUserName: 'Admin TaniFresh',
+                    isAdmin: false,
+                  ),
+                ),
+              );
+            },
+          ),
+          _buildMenuItem(
+            icon: Icons.info_outline,
+            title: 'Tentang Aplikasi',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AboutScreen(),
                 ),
               );
             },

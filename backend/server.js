@@ -332,6 +332,100 @@ app.delete('/api/admin/users/:id/reject', authMiddleware, adminMiddleware, async
     }
 });
 
+// ==================== ANALYTICS ROUTES ====================
+
+// Get admin analytics (NO AUTH for quick testing)
+app.get('/api/admin/analytics', async (req, res) => {
+    try {
+        // Get order statistics by month (last 6 months)
+        const [monthlyOrders] = await pool.query(`
+            SELECT 
+                DATE_FORMAT(created_at, '%Y-%m') as month,
+                COUNT(*) as count,
+                SUM(total) as revenue
+            FROM orders
+            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+            ORDER BY month ASC
+        `);
+
+        // Get orders by status
+        const [statusCounts] = await pool.query(`
+            SELECT status, COUNT(*) as count
+            FROM orders
+            GROUP BY status
+        `);
+
+        // Get top products
+        const [topProducts] = await pool.query(`
+            SELECT 
+                oi.product_name,
+                SUM(oi.quantity) as total_quantity,
+                COUNT(DISTINCT oi.order_id) as order_count
+            FROM order_items oi
+            GROUP BY oi.product_name
+            ORDER BY total_quantity DESC
+            LIMIT 5
+        `);
+
+        res.json({
+            monthlyOrders,
+            statusCounts,
+            topProducts
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Terjadi kesalahan server' });
+    }
+});
+
+// Get client statistics (NO AUTH for quick testing)
+app.get('/api/client/statistics', async (req, res) => {
+    try {
+        // Get ALL users' order statistics by month (last 6 months)
+        // For demo without auth, show aggregate data
+        const [monthlyOrders] = await pool.query(`
+            SELECT 
+                DATE_FORMAT(created_at, '%Y-%m') as month,
+                COUNT(*) as count,
+                SUM(total) as total_spent
+            FROM orders
+            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+            ORDER BY month ASC
+        `);
+
+        // Get orders by status
+        const [statusCounts] = await pool.query(`
+            SELECT status, COUNT(*) as count
+            FROM orders
+            GROUP BY status
+        `);
+
+        // Get top purchased products (all users)
+        const [topProducts] = await pool.query(`
+            SELECT 
+                oi.product_name,
+                SUM(oi.quantity) as total_quantity,
+                SUM(oi.price * oi.quantity) as total_spent
+            FROM order_items oi
+            JOIN orders o ON oi.order_id = o.id
+            GROUP BY oi.product_name
+            ORDER BY total_quantity DESC
+            LIMIT 5
+        `);
+
+        res.json({
+            monthlyOrders,
+            statusCounts,
+            topProducts
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Terjadi kesalahan server' });
+    }
+});
+
 // ==================== WEATHER ROUTE ====================
 
 // Get weather
@@ -352,6 +446,6 @@ app.get('/api/weather', async (req, res) => {
 // ==================== START SERVER ====================
 
 app.listen(PORT, () => {
-    console.log(`✅ TaniFresh Backend running on http://localhost:${PORT}`);
+    console.log(`✅ TatanenFresh Backend running on http://localhost:${PORT}`);
     console.log(`📊 Database: ${process.env.DB_NAME}`);
 });

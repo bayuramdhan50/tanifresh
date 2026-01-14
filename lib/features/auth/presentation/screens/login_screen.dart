@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: AppTheme.spacingM),
                     Text(
-                      'TaniFresh',
+                      'TatanenFresh',
                       style: AppTextStyles.display1.copyWith(
                         color: Colors.white,
                       ),

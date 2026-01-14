@@ -11,6 +11,10 @@ import 'package:tanifresh/features/admin/dashboard/presentation/providers/admin_
 import 'package:tanifresh/features/admin/orders/presentation/screens/admin_orders_screen.dart';
 import 'package:tanifresh/features/admin/products/presentation/screens/admin_products_screen.dart';
 import 'package:tanifresh/shared/providers/notification_provider.dart';
+import 'package:tanifresh/shared/screens/about_screen.dart';
+import 'package:tanifresh/features/admin/analytics/presentation/screens/admin_analytics_screen.dart';
+import 'package:tanifresh/shared/screens/supplier_map_screen.dart';
+import 'package:tanifresh/features/admin/chat/presentation/screens/admin_chat_list_screen.dart';
 
 /// Admin dashboard screen with weather widget
 class AdminDashboardScreen extends StatefulWidget {
@@ -305,6 +309,70 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                 subtitle: 'Add new product to catalog',
                 onTap: () {
                   widget.onNavigateToTab?.call(3); // Navigate to Products tab
+                },
+              ),
+
+              const SizedBox(height: AppTheme.spacingM),
+
+              _buildActionButton(
+                icon: Icons.info_outline,
+                title: 'Tentang Aplikasi',
+                subtitle: 'Informasi aplikasi dan pengembang',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AboutScreen(),
+                    ),
+                  );
+                },
+              ),
+
+              const SizedBox(height: AppTheme.spacingM),
+
+              _buildActionButton(
+                icon: Icons.analytics,
+                title: 'Analytics Dashboard',
+                subtitle: 'Lihat statistik dan visualisasi data',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdminAnalyticsScreen(),
+                    ),
+                  );
+                },
+              ),
+
+              const SizedBox(height: AppTheme.spacingM),
+
+              _buildActionButton(
+                icon: Icons.map_outlined,
+                title: 'Peta Supplier',
+                subtitle: 'Lihat lokasi supplier di peta',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SupplierMapScreen(),
+                    ),
+                  );
+                },
+              ),
+
+              const SizedBox(height: AppTheme.spacingM),
+
+              _buildActionButton(
+                icon: Icons.chat_bubble_outline,
+                title: 'Chat dengan Client',
+                subtitle: 'Lihat pesan dari client',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdminChatListScreen(),
+                    ),
+                  );
                 },
               ),
             ]),

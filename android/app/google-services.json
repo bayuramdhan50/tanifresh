@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "471043921472",
+    "firebase_url": "https://tatanenfresh-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tatanenfresh",
+    "storage_bucket": "tatanenfresh.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471043921472:android:334d814f8f517a065ab1a5",
+        "android_client_info": {
+          "package_name": "com.mobile.tatanenfresh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqTbmmmiqrZ9kMLfR-pT7QuxgQgE4NcBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

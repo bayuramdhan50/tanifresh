@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/app_text_styles.dart';
@@ -16,7 +17,19 @@ import 'features/auth/presentation/screens/login_screen.dart';
 import 'features/client/home/presentation/screens/client_home_screen.dart';
 import 'features/admin/dashboard/presentation/screens/admin_dashboard_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  // Configuration is automatically loaded from android/app/google-services.json
+  try {
+    await Firebase.initializeApp();
+    print('✅ Firebase initialized successfully');
+  } catch (e) {
+    print('⚠️ Firebase initialization error: $e');
+    print('📝 Make sure google-services.json is in android/app/');
+  }
+
   runApp(const MyApp());
 }
 
@@ -40,7 +53,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AdminProductsProvider()),
       ],
       child: MaterialApp(
-        title: 'TaniFresh',
+        title: 'TatanenFresh',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const SplashScreen(),
@@ -163,7 +176,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                       const SizedBox(height: AppTheme.spacingL),
                       Text(
-                        'TaniFresh',
+                        'TatanenFresh',
                         style: AppTextStyles.display1.copyWith(
                           color: Colors.white,
                           fontSize: 40,
