@@ -9,8 +9,9 @@ import 'package:tanifresh/core/theme/app_theme.dart';
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
-  // YouTube placeholder URL - Update this when video is ready
-  static const String youtubeUrl = 'https://www.youtube.com/';
+  // YouTube demo URL
+  static const String youtubeUrl =
+      'https://youtu.be/j2TiVELO6L0?si=uxBI43FcC1Fvwdwo';
 
   @override
   Widget build(BuildContext context) {
@@ -444,47 +445,19 @@ class AboutScreen extends StatelessWidget {
     final Uri url = Uri.parse(youtubeUrl);
 
     try {
-      final bool canLaunch = await canLaunchUrl(url);
-      if (canLaunch) {
-        await launchUrl(
-          url,
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        if (context.mounted) {
-          _showPlaceholderDialog(context);
-        }
-      }
+      await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
     } catch (e) {
       if (context.mounted) {
-        _showPlaceholderDialog(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Tidak dapat membuka YouTube: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
       }
     }
-  }
-
-  void _showPlaceholderDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Row(
-          children: [
-            Icon(Icons.videocam, color: AppColors.accent),
-            SizedBox(width: 8),
-            Text('Video Demo'),
-          ],
-        ),
-        content: const Text(
-          'Video demo aplikasi sedang dalam proses pembuatan.\n\n'
-          'Link YouTube akan segera tersedia. Untuk saat ini, '
-          'Anda dapat menjelajahi aplikasi secara langsung.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 }
