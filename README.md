@@ -27,6 +27,11 @@ Aplikasi mobile marketplace B2B yang menghubungkan restoran dengan petani/suppli
 - ✅ **Halaman Tentang Aplikasi** dengan info developer dan fitur
 - ✅ **Link YouTube Demo** untuk demo aplikasi
 
+## 🎥 Demo Aplikasi
+
+Tonton video demo TaniFresh di YouTube:
+👉 **[Video Demo TaniFresh](https://youtu.be/j2TiVELO6L0?si=uxBI43FcC1Fvwdwo)**
+
 ## 🛠️ Tech Stack
 
 ### Frontend (Mobile)
